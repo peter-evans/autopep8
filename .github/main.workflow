@@ -1,6 +1,6 @@
 workflow "Format python code" {
-  on = "push"
   resolves = ["Create Pull Request"]
+  on = "schedule(0 0 1 1/12 *)"
 }
 
 action "autopep8" {
