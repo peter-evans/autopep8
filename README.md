@@ -10,11 +10,11 @@ This action is designed to be used in conjunction with [Create Pull Request](htt
 This action is a simple wrapper around [autopep8](https://github.com/hhatto/autopep8). Arguments should be passed to the action via the `args` parameter.
 This example fixes all python files in your repository with aggressive level 2.
 
-```hcl
-action "autopep8" {
-  uses = "peter-evans/autopep8@v1.0.0"
-  args = "--recursive --in-place --aggressive --aggressive ."
-}
+```yml
+    - name: autopep8
+      uses: peter-evans/autopep8@v1.0.0
+      with:
+        args: --recursive --in-place --aggressive --aggressive .
 ```
 
 See [autopep8 documentation](https://github.com/hhatto/autopep8) for further argument details.
@@ -23,31 +23,30 @@ See [autopep8 documentation](https://github.com/hhatto/autopep8) for further arg
 
 On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request), as in the following example.
 
-```hcl
-workflow "Format python code" {
-  on = "push"
-  resolves = ["Create Pull Request"]
-}
-
-action "autopep8" {
-  uses = "peter-evans/autopep8@v1.0.0"
-  args = "--recursive --in-place --aggressive --aggressive ."
-}
-
-action "Create Pull Request" {
-  needs = "autopep8"
-  uses = "peter-evans/create-pull-request@v1.0.0"
-  secrets = ["GITHUB_TOKEN"]
-  env = {
-    PULL_REQUEST_BRANCH = "autopep8-patches"
-    COMMIT_MESSAGE = "autopep8 action fixes"
-    PULL_REQUEST_TITLE = "Fixes by autopep8 action"
-    PULL_REQUEST_BODY = "This is an auto-generated PR with fixes by autopep8."
-  }
-}
+```yml
+name: Format python code
+on: push
+jobs:
+  autopep8:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: autopep8
+      uses: peter-evans/autopep8@v1.0.0
+      with:
+        args: --recursive --in-place --aggressive --aggressive .
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v1.1.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
+        PULL_REQUEST_BRANCH: autopep8-patches
+        COMMIT_MESSAGE: autopep8 action fixes
+        PULL_REQUEST_TITLE: Fixes by autopep8 action
+        PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
 ```
 
-The workflow in this repository created [this sample pull request](https://github.com/peter-evans/autopep8/pull/1).
+The workflow in this repository created [this sample pull request](https://github.com/peter-evans/autopep8/pull/6).
 
 ## License
 
