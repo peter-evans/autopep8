@@ -36,7 +36,7 @@ jobs:
       with:
         args: --recursive --in-place --aggressive --aggressive .
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v1.1.1
+      uses: peter-evans/create-pull-request@v1.1.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REPO_ACCESS_TOKEN: ${{ secrets.REPO_ACCESS_TOKEN }}
