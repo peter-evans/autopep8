@@ -30,7 +30,7 @@ jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1
     - name: autopep8
       uses: peter-evans/autopep8@v1.0.0
       with:
