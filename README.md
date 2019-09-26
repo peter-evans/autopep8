@@ -36,13 +36,15 @@ jobs:
       with:
         args: --recursive --in-place --aggressive --aggressive .
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v1.2.1
+      uses: peter-evans/create-pull-request@v1.3.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PULL_REQUEST_BRANCH: autopep8-patches
         COMMIT_MESSAGE: autopep8 action fixes
         PULL_REQUEST_TITLE: Fixes by autopep8 action
         PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
+        PULL_REQUEST_LABELS: autopep8, automated pr
+        PULL_REQUEST_REVIEWERS: peter-evans
+        PULL_REQUEST_BRANCH: autopep8-patches
 ```
 
 The workflow in this repository created [this sample pull request](https://github.com/peter-evans/autopep8/pull/9).
