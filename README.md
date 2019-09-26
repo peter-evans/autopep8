@@ -47,7 +47,7 @@ jobs:
         PULL_REQUEST_BRANCH: autopep8-patches
 ```
 
-The workflow in this repository created [this sample pull request](https://github.com/peter-evans/autopep8/pull/9).
+The workflow in this repository created [this sample pull request](https://github.com/peter-evans/autopep8/pull/11).
 
 ## License
 
