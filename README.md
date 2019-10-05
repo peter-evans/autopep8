@@ -36,7 +36,7 @@ jobs:
       with:
         args: --recursive --in-place --aggressive --aggressive .
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v1.4.0
+      uses: peter-evans/create-pull-request@v1.5.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COMMIT_MESSAGE: autopep8 action fixes
