@@ -6,18 +6,20 @@ jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: autopep8
-      uses: ./
-      with:
-        args: --recursive --in-place --aggressive --aggressive .
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v1.5.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        COMMIT_MESSAGE: autopep8 action fixes
-        PULL_REQUEST_TITLE: Fixes by autopep8 action
-        PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
-        PULL_REQUEST_LABELS: autopep8, automated pr
-        PULL_REQUEST_REVIEWERS: peter-evans
-        PULL_REQUEST_BRANCH: autopep8-patches
+      - uses: actions/checkout@v1
+      - name: autopep8
+        uses: ./
+        with:
+          args: --recursive --in-place --aggressive --aggressive .
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v1.5.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_MESSAGE: autopep8 action fixes
+          COMMIT_AUTHOR_EMAIL: peter-evans@users.noreply.github.com
+          COMMIT_AUTHOR_NAME: Peter Evans
+          PULL_REQUEST_TITLE: Fixes by autopep8 action
+          PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
+          PULL_REQUEST_LABELS: autopep8, automated pr
+          PULL_REQUEST_REVIEWERS: peter-evans
+          PULL_REQUEST_BRANCH: autopep8-patches
