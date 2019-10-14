@@ -82,6 +82,9 @@ jobs:
         uses: peter-evans/autopep8@v1.1.0
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
+      - name: Set autopep8 branch name
+        id: vars
+        run: echo ::set-output name=branch-name::"autopep8-patches/$GITHUB_HEAD_REF"
       - name: Create Pull Request
         if: steps.autopep8.outputs.exit-code == 2
         uses: peter-evans/create-pull-request@v1.5.2
@@ -94,7 +97,8 @@ jobs:
           PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
           PULL_REQUEST_LABELS: autopep8, automated pr
           PULL_REQUEST_REVIEWERS: peter-evans
-          PULL_REQUEST_BRANCH: autopep8-patches
+          PULL_REQUEST_BRANCH: ${{ steps.vars.outputs.branch-name }}
+          BRANCH_SUFFIX: none
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
