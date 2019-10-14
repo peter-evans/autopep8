@@ -12,16 +12,28 @@ This example fixes all python files in your repository with aggressive level 2.
 
 ```yml
     - name: autopep8
-      uses: peter-evans/autopep8@v1.0.0
+      id: autopep8
+      uses: peter-evans/autopep8@v1.1.0
       with:
         args: --recursive --in-place --aggressive --aggressive .
 ```
 
+The action outputs the exit code from autopep8. This can be useful in combination with the autopep8 flag `--exit-code` for pull request checks.
+
+```yml
+      - name: Fail if autopep8 made changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: exit 1
+```
+
 See [autopep8 documentation](https://github.com/hhatto/autopep8) for further argument details.
 
-#### Automated pull requests
+## Automated pull requests
 
-On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request), as in the following example.
+On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request).
+
+The following workflow is a simple example to demonstrate how the two actions work together.
+You can see what the resulting pull request would look like from [this sample pull request](https://github.com/peter-evans/autopep8/pull/12).
 
 ```yml
 name: Format python code
@@ -32,11 +44,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: autopep8
-        uses: peter-evans/autopep8@v1.0.0
+        uses: peter-evans/autopep8@v1.1.0
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1.5.1
+        uses: peter-evans/create-pull-request@v1.5.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMIT_MESSAGE: autopep8 action fixes
@@ -49,7 +61,44 @@ jobs:
           PULL_REQUEST_BRANCH: autopep8-patches
 ```
 
-The workflow in this repository created [this sample pull request](https://github.com/peter-evans/autopep8/pull/12).
+The following is an example workflow for a more realistic use-case where autopep8 runs as both a check on pull requests and raises a further pull request to apply fixes.
+
+How it works:
+1. When a pull request is raised the workflow executes as a check
+2. If autopep8 makes any fixes a pull request will be raised for those fixes to be merged into the current pull request branch. The check then fails.
+3. When the pull request containing the fixes is merged the workflow runs again. This time autopep8 makes no changes and the check passes.
+4. The original pull request can now be merged.
+
+```yml
+name: autopep8
+on: pull_request
+jobs:
+  autopep8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: autopep8
+        id: autopep8
+        uses: peter-evans/autopep8@v1.1.0
+        with:
+          args: --exit-code --recursive --in-place --aggressive --aggressive .
+      - name: Create Pull Request
+        if: steps.autopep8.outputs.exit-code == 2
+        uses: peter-evans/create-pull-request@v1.5.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMIT_MESSAGE: autopep8 action fixes
+          COMMIT_AUTHOR_EMAIL: peter-evans@users.noreply.github.com
+          COMMIT_AUTHOR_NAME: Peter Evans
+          PULL_REQUEST_TITLE: Fixes by autopep8 action
+          PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
+          PULL_REQUEST_LABELS: autopep8, automated pr
+          PULL_REQUEST_REVIEWERS: peter-evans
+          PULL_REQUEST_BRANCH: autopep8-patches
+      - name: Fail if autopep8 made changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: exit 1
+```
 
 ## License
 
