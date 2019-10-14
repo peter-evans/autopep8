@@ -65,7 +65,7 @@ The following is an example workflow for a more realistic use-case where autopep
 
 How it works:
 1. When a pull request is raised the workflow executes as a check
-2. If autopep8 makes any fixes a pull request will be raised for those fixes to be merged into the current pull request branch. The check then fails.
+2. If autopep8 makes any fixes a pull request will be raised for those fixes to be merged into the current pull request branch. The workflow then deliberately causes the check to fail.
 3. When the pull request containing the fixes is merged the workflow runs again. This time autopep8 makes no changes and the check passes.
 4. The original pull request can now be merged.
 
