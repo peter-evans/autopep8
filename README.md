@@ -11,11 +11,11 @@ This action is a simple wrapper around [autopep8](https://github.com/hhatto/auto
 This example fixes all python files in your repository with aggressive level 2.
 
 ```yml
-    - name: autopep8
-      id: autopep8
-      uses: peter-evans/autopep8@v1.1.0
-      with:
-        args: --recursive --in-place --aggressive --aggressive .
+      - name: autopep8
+        id: autopep8
+        uses: peter-evans/autopep8@v1.1.0
+        with:
+          args: --recursive --in-place --aggressive --aggressive .
 ```
 
 The action outputs the exit code from autopep8. This can be useful in combination with the autopep8 flag `--exit-code` for pull request checks.
