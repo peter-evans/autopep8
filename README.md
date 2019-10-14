@@ -74,6 +74,7 @@ name: autopep8
 on: pull_request
 jobs:
   autopep8:
+    if: startsWith(github.head_ref, 'autopep8-patches') == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
