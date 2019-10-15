@@ -30,7 +30,7 @@ See [autopep8 documentation](https://github.com/hhatto/autopep8) for further arg
 
 ## Automated pull requests
 
-On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request).
+On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request) or a [direct push to branch workflow](https://github.com/peter-evans/autopep8#direct-push-with-on-pull_request-workflows).
 
 The following workflow is a simple example to demonstrate how the two actions work together.
 You can see what the resulting pull request would look like from [this sample pull request](https://github.com/peter-evans/autopep8/pull/12).
