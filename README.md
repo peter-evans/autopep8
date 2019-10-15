@@ -61,10 +61,12 @@ jobs:
           PULL_REQUEST_BRANCH: autopep8-patches
 ```
 
+## Automated pull requests with "on: pull_request" workflows
+
 The following is an example workflow for a more realistic use-case where autopep8 runs as both a check on pull requests and raises a further pull request to apply fixes.
 
 How it works:
-1. When a pull request is raised the workflow executes as a check
+1. When a pull request is raised the workflow executes as a check.
 2. If autopep8 makes any fixes a pull request will be raised for those fixes to be merged into the current pull request branch. The workflow then deliberately causes the check to fail.
 3. When the pull request containing the fixes is merged the workflow runs again. This time autopep8 makes no changes and the check passes.
 4. The original pull request can now be merged.
@@ -103,6 +105,44 @@ jobs:
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
+```
+
+## Direct push with "on: pull_request" workflows
+
+The following workflow is an alternative to the previous workflow. Instead of raising a second pull request it commits the changes made by autopep8 directly to the pull request branch.
+
+**Important caveat:** If you have other pull request checks besides the following workflow then you must use a Personal Access Token instead of the default `GITHUB_TOKEN`.
+This is due to a deliberate limitation imposed by GitHub Actions that events raised by a workflow (such as `push`) cannot trigger further workflow runs.
+This is to to prevent accidental "infinite loop" situations, and as an anti-abuse measure.
+Using a `repo` scoped Personal Access Token is an approved workaround. See [this issue](https://github.com/peter-evans/create-pull-request/issues/48) for further detail.
+
+How it works:
+1. When a pull request is raised the workflow executes as a check.
+2. If autopep8 makes any fixes they will be committed directly to the current pull request branch.
+3. The `push` triggers all pull request checks to run again.
+
+```yml
+name: autopep8
+on: pull_request
+jobs:
+  autopep8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: autopep8
+        id: autopep8
+        uses: peter-evans/autopep8@v1.1.0
+        with:
+          args: --exit-code --recursive --in-place --aggressive --aggressive .
+      - name: Commit autopep8 changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: |
+          git config --global user.name 'Peter Evans'
+          git config --global user.email 'peter-evans@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git checkout $GITHUB_HEAD_REF
+          git commit -am "Automated autopep8 fixes"
+          git push
 ```
 
 ## License
