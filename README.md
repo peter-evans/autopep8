@@ -111,10 +111,10 @@ jobs:
 
 The following workflow is an alternative to the previous workflow. Instead of raising a second pull request it commits the changes made by autopep8 directly to the pull request branch.
 
-**Important caveat:** If you have other pull request checks besides the following workflow then you must use a Personal Access Token instead of the default `GITHUB_TOKEN`.
+**Important caveat:** If you have other pull request checks besides the following workflow then you must use a [Personal Access Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) instead of the default `GITHUB_TOKEN`.
 This is due to a deliberate limitation imposed by GitHub Actions that events raised by a workflow (such as `push`) cannot trigger further workflow runs.
 This is to prevent accidental "infinite loop" situations, and as an anti-abuse measure.
-Using a `repo` scoped Personal Access Token is an approved workaround. See [this issue](https://github.com/peter-evans/create-pull-request/issues/48) for further detail.
+Using a `repo` scoped [Personal Access Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) is an approved workaround. See [this issue](https://github.com/peter-evans/create-pull-request/issues/48) for further detail.
 
 How it works:
 1. When a pull request is raised the workflow executes as a check.
