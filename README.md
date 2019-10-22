@@ -48,7 +48,7 @@ jobs:
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1.5.2
+        uses: peter-evans/create-pull-request@v1.5.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMIT_MESSAGE: autopep8 action fixes
@@ -90,7 +90,7 @@ jobs:
         run: echo ::set-output name=branch-name::"autopep8-patches/$GITHUB_HEAD_REF"
       - name: Create Pull Request
         if: steps.autopep8.outputs.exit-code == 2
-        uses: peter-evans/create-pull-request@v1.5.2
+        uses: peter-evans/create-pull-request@v1.5.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMIT_MESSAGE: autopep8 action fixes
