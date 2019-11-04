@@ -26,4 +26,4 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ steps.vars.outputs.head_repo }}
           git checkout $GITHUB_HEAD_REF
           git commit -am "Automated autopep8 fixes"
-          git push
+          git push https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ steps.vars.outputs.head_repo }}.git HEAD:refs/heads/$GITHUB_HEAD_REF
