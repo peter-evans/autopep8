@@ -4,7 +4,15 @@ jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
+      - name: Get HEAD repo
+        id: vars
+        run: |
+          echo ::set-output name=head_repo::$(jq -r .pull_request.head.repo.full_name "$GITHUB_EVENT_PATH")
       - uses: actions/checkout@v1
+        with:
+          repository: ${{ steps.vars.outputs.head_repo }}
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
       - name: autopep8
         id: autopep8
         uses: peter-evans/autopep8@v1.1.0
@@ -15,7 +23,6 @@ jobs:
         run: |
           git config --global user.name 'Peter Evans'
           git config --global user.email 'peter-evans@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout $GITHUB_HEAD_REF
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git commit -am "Automated autopep8 fixes"
           git push
