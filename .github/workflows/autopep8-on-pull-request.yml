@@ -8,7 +8,7 @@ jobs:
         id: vars
         run: |
           echo ::set-output name=head_repo::$(jq -r .pull_request.head.repo.full_name "$GITHUB_EVENT_PATH")
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@master
         with:
           repository: ${{ steps.vars.outputs.head_repo }}
           ref: ${{ github.head_ref }}
@@ -23,6 +23,6 @@ jobs:
         run: |
           git config --global user.name 'Peter Evans'
           git config --global user.email 'peter-evans@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ steps.vars.outputs.head_repo }}
+          #git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ steps.vars.outputs.head_repo }}
           git commit -am "Automated autopep8 fixes"
           git push
