@@ -1,0 +1,21 @@
+name: autopep8 on pull request
+on: pull_request
+jobs:
+  autopep8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: autopep8
+        id: autopep8
+        uses: peter-evans/autopep8@v1.1.0
+        with:
+          args: --exit-code --recursive --in-place --aggressive --aggressive .
+      - name: Commit autopep8 changes
+        if: steps.autopep8.outputs.exit-code == 2
+        run: |
+          git config --global user.name 'Peter Evans'
+          git config --global user.email 'peter-evans@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git checkout $GITHUB_HEAD_REF
+          git commit -am "Automated autopep8 fixes"
+          git push
