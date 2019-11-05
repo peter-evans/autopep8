@@ -74,12 +74,15 @@ How it works:
 3. When the pull request containing the fixes is merged the workflow runs again. This time autopep8 makes no changes and the check passes.
 4. The original pull request can now be merged.
 
+Note that due to [limitations on forked repositories](https://help.github.com/en/github/automating-your-workflow-with-github-actions/virtual-environments-for-github-actions#token-permissions) this workflow does not work for pull requests raised from forks.
+
 ```yml
 name: autopep8
 on: pull_request
 jobs:
   autopep8:
-    if: startsWith(github.head_ref, 'autopep8-patches') == false
+    # Check if the PR is not raised by this workflow and is not from a fork
+    if: startsWith(github.head_ref, 'autopep8-patches') == false && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -124,11 +127,15 @@ How it works:
 2. If autopep8 makes any fixes they will be committed directly to the current pull request branch.
 3. The `push` triggers all pull request checks to run again.
 
+Note that due to [limitations on forked repositories](https://help.github.com/en/github/automating-your-workflow-with-github-actions/virtual-environments-for-github-actions#token-permissions) this workflow does not work for pull requests raised from forks.
+
 ```yml
 name: autopep8
 on: pull_request
 jobs:
   autopep8:
+    # Check if the PR is not from a fork
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -142,8 +149,8 @@ jobs:
         run: |
           git config --global user.name 'Peter Evans'
           git config --global user.email 'peter-evans@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          git checkout $GITHUB_HEAD_REF
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}
+          git checkout ${{ github.head_ref }}
           git commit -am "Automated autopep8 fixes"
           git push
 ```
