@@ -47,17 +47,17 @@ jobs:
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1.6.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMIT_MESSAGE: autopep8 action fixes
-          COMMIT_AUTHOR_EMAIL: peter-evans@users.noreply.github.com
-          COMMIT_AUTHOR_NAME: Peter Evans
-          PULL_REQUEST_TITLE: Fixes by autopep8 action
-          PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
-          PULL_REQUEST_LABELS: autopep8, automated pr
-          PULL_REQUEST_REVIEWERS: peter-evans
-          PULL_REQUEST_BRANCH: autopep8-patches
+        uses: peter-evans/create-pull-request@v1.7.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: autopep8 action fixes
+          author-email: peter-evans@users.noreply.github.com
+          author-name: Peter Evans
+          title: Fixes by autopep8 action
+          body: This is an auto-generated PR with fixes by autopep8.
+          labels: autopep8, automated pr
+          reviewers: peter-evans
+          branch: autopep8-patches
 ```
 
 This configuration will create pull requests that look like this:
@@ -96,18 +96,18 @@ jobs:
         run: echo ::set-output name=branch-name::"autopep8-patches/$GITHUB_HEAD_REF"
       - name: Create Pull Request
         if: steps.autopep8.outputs.exit-code == 2
-        uses: peter-evans/create-pull-request@v1.6.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMIT_MESSAGE: autopep8 action fixes
-          COMMIT_AUTHOR_EMAIL: peter-evans@users.noreply.github.com
-          COMMIT_AUTHOR_NAME: Peter Evans
-          PULL_REQUEST_TITLE: Fixes by autopep8 action
-          PULL_REQUEST_BODY: This is an auto-generated PR with fixes by autopep8.
-          PULL_REQUEST_LABELS: autopep8, automated pr
-          PULL_REQUEST_REVIEWERS: peter-evans
-          PULL_REQUEST_BRANCH: ${{ steps.vars.outputs.branch-name }}
-          BRANCH_SUFFIX: none
+        uses: peter-evans/create-pull-request@v1.7.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: autopep8 action fixes
+          author-email: peter-evans@users.noreply.github.com
+          author-name: Peter Evans
+          title: Fixes by autopep8 action
+          body: This is an auto-generated PR with fixes by autopep8.
+          labels: autopep8, automated pr
+          reviewers: peter-evans
+          branch: ${{ steps.vars.outputs.branch-name }}
+          branch-suffix: none
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
