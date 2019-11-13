@@ -74,7 +74,7 @@ How it works:
 3. When the pull request containing the fixes is merged the workflow runs again. This time autopep8 makes no changes and the check passes.
 4. The original pull request can now be merged.
 
-Note that due to [limitations on forked repositories](https://help.github.com/en/github/automating-your-workflow-with-github-actions/virtual-environments-for-github-actions#token-permissions) this workflow does not work for pull requests raised from forks.
+Note that due to [limitations on forked repositories](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#permissions-for-the-github_token) this workflow does not work for pull requests raised from forks.
 
 ```yml
 name: autopep8
@@ -127,7 +127,7 @@ How it works:
 2. If autopep8 makes any fixes they will be committed directly to the current pull request branch.
 3. The `push` triggers all pull request checks to run again.
 
-Note that due to [limitations on forked repositories](https://help.github.com/en/github/automating-your-workflow-with-github-actions/virtual-environments-for-github-actions#token-permissions) this workflow does not work for pull requests raised from forks.
+Note that due to [limitations on forked repositories](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#permissions-for-the-github_token) this workflow does not work for pull requests raised from forks.
 
 ```yml
 name: autopep8
