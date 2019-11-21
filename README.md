@@ -139,6 +139,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+        with:
+          ref: ${{ github.head_ref }}
       - name: autopep8
         id: autopep8
         uses: peter-evans/autopep8@v1.1.0
@@ -150,7 +152,6 @@ jobs:
           git config --global user.name 'Peter Evans'
           git config --global user.email 'peter-evans@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}
-          git checkout ${{ github.head_ref }}
           git commit -am "Automated autopep8 fixes"
           git push
 ```
