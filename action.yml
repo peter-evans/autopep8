@@ -1,17 +1,17 @@
-name: 'autopep8'
-author: 'Peter Evans'
-description: 'Automatically formats Python code to conform to the PEP 8 style guide.'
+name: 'autoblack'
+author: 'Jonathan Medwig'
+description: 'Automatically formats Python code to conform to the Black  style guide.'
 inputs:
   args:
-    description: 'Arguments to pass to autopep8'
+    description: 'Arguments to pass to Black'
     required: true
     default: '--help'
 outputs:
   exit-code:
-    description: 'The exit code output by autopep8'
+    description: 'The exit code output by Black'
 runs:
   using: 'docker'
-  image: 'docker://peterevans/autopep8:1.1.0'
+  image: 'docker://medwig/autoblack'
   args:
     - ${{ inputs.args }}
 branding:

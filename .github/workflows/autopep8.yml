@@ -1,7 +1,7 @@
 name: Format python code
 on:
-  repository_dispatch:
-    types: [autopep8]
+  pull_request
+
 jobs:
   autopep8:
     runs-on: ubuntu-latest
@@ -21,5 +21,3 @@ jobs:
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
-          reviewers: peter-evans
-          branch: autopep8-patches

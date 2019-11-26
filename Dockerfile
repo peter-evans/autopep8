@@ -1,19 +1,17 @@
-FROM python:3.7.4-alpine3.10
+FROM kiwicom/black
 
-LABEL maintainer="Peter Evans <mail@peterevans.dev>"
-LABEL repository="https://github.com/peter-evans/autopep8"
-LABEL homepage="https://github.com/peter-evans/autopep8"
+LABEL maintainer="Jonathan Medwig"
+LABEL repository="https://github.com/medwig/autoblack"
+LABEL homepage="https://github.com/medwig/autoblack"
 
-LABEL com.github.actions.name="autopep8"
-LABEL com.github.actions.description="Automatically formats Python code to conform to the PEP 8 style guide."
+LABEL com.github.actions.name="autoblack"
+LABEL com.github.actions.description="Automatically formats Python code with Black."
 LABEL com.github.actions.icon="code"
 LABEL com.github.actions.color="blue"
 
 COPY LICENSE README.md /
 
-COPY requirements.txt /tmp/
-RUN pip install --requirement /tmp/requirements.txt
-
 COPY entrypoint.sh /entrypoint.sh
+COPY example example
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["--help"]
