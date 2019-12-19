@@ -13,7 +13,9 @@ COPY LICENSE README.md /
 
 COPY requirements.txt /tmp/
 RUN pip install --requirement /tmp/requirements.txt
+RUN pip install GitPython
 
+RUN apk add git
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["--help"]
