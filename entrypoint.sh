@@ -3,7 +3,7 @@ set -uo pipefail
 
 cd $GITHUB_WORKSPACE
 
-readarray -t FILES < <( git --no-pager diff --name-only HEAD...master )
+readarray -t FILES < <( git --no-pager diff --name-only `git merge-base origin/master HEAD` )
 #autopep8 $*
 SUCCESS=1
 for file in "${FILES[@]}"; do
