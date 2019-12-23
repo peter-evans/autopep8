@@ -3,12 +3,14 @@ set -uo pipefail
 
 cd $GITHUB_WORKSPACE
 
-readarray -t FILES < <( git --no-pager diff --name-only `git merge-base origin/master HEAD` )
-#autopep8 $*
+MERGE_BASE=$(git merge-base origin/master HEAD)
+readarray -t FILES <  <(git diff --name-status HEAD $MERGE_BASE)
+
 SUCCESS=1
+
 for file in "${FILES[@]}"; do
   autopep8 $file
-  let "SUCCESS*=$?"
+  (( SUCCESS*=$? ))
 done
 
 echo ::set-output name=exit-code::$SUCCESS
