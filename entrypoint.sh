@@ -9,7 +9,7 @@ readarray -t FILES <  <(git diff --name-status HEAD $MERGE_BASE)
 SUCCESS=0
 
 for file in "${FILES[@]}"; do
-  autopep8 $file
+  autopep8 -v  --show-source  $file
   (( SUCCESS+=$? ))
 done
 
