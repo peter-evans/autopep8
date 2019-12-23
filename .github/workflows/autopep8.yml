@@ -16,10 +16,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
-          author-email: peter-evans@users.noreply.github.com
-          author-name: Peter Evans
+          author-email: 57939143+RivkaKremer@users.noreply.github.com
+          author-name: Rivka Kremer
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
-          reviewers: peter-evans
+          reviewers: rivka-kremer
           branch: autopep8-patches
