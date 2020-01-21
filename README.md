@@ -13,7 +13,7 @@ This example fixes all python files in your repository with aggressive level 2.
 ```yml
       - name: autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --recursive --in-place --aggressive --aggressive .
 ```
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
@@ -89,7 +89,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
       - name: Set autopep8 branch name
@@ -143,7 +143,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - name: autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
       - name: Commit autopep8 changes
