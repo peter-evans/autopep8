@@ -13,7 +13,7 @@ This example fixes all python files in your repository with aggressive level 2.
 ```yml
       - name: autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --recursive --in-place --aggressive --aggressive .
 ```
@@ -41,18 +41,17 @@ jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
-          author-email: peter-evans@users.noreply.github.com
-          author-name: Peter Evans
+          committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
@@ -66,7 +65,9 @@ This configuration will create pull requests that look like this:
 
 ## Automated pull requests with "on: pull_request" workflows
 
-The following is an example workflow for a more realistic use-case where autopep8 runs as both a check on pull requests and raises a further pull request to apply fixes.
+**Update**: While the following approach does work in some cases, my strong recommendation would be to use a slash command style "ChatOps" solution for operations on pull requests. See [slash-command-dispatch](https://github.com/peter-evans/slash-command-dispatch) for such a solution.
+
+The following is an example workflow for a use-case where autopep8 runs as both a check on pull requests and raises a further pull request to apply fixes.
 
 How it works:
 1. When a pull request is raised the workflow executes as a check.
@@ -85,10 +86,10 @@ jobs:
     if: startsWith(github.head_ref, 'autopep8-patches') == false && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
       - name: Set autopep8 branch name
@@ -96,18 +97,16 @@ jobs:
         run: echo ::set-output name=branch-name::"autopep8-patches/$GITHUB_HEAD_REF"
       - name: Create Pull Request
         if: steps.autopep8.outputs.exit-code == 2
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
-          author-email: peter-evans@users.noreply.github.com
-          author-name: Peter Evans
+          committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
           reviewers: peter-evans
           branch: ${{ steps.vars.outputs.branch-name }}
-          branch-suffix: none
       - name: Fail if autopep8 made changes
         if: steps.autopep8.outputs.exit-code == 2
         run: exit 1
@@ -138,12 +137,13 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           ref: ${{ github.head_ref }}
       - name: autopep8
         id: autopep8
-        uses: peter-evans/autopep8@v1.1.0
+        uses: peter-evans/autopep8@v1
         with:
           args: --exit-code --recursive --in-place --aggressive --aggressive .
       - name: Commit autopep8 changes
@@ -151,7 +151,6 @@ jobs:
         run: |
           git config --global user.name 'Peter Evans'
           git config --global user.email 'peter-evans@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.REPO_ACCESS_TOKEN }}@github.com/${{ github.repository }}
           git commit -am "Automated autopep8 fixes"
           git push
 ```

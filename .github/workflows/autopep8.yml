@@ -1,25 +1,30 @@
 name: Format python code
 on:
   repository_dispatch:
-    types: [autopep8]
+    types: [autopep8-example-command]
 jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: autopep8
         uses: ./
         with:
           args: --vebrose  --show-source --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
-          author-email: 57939143+RivkaKremer@users.noreply.github.com
-          author-name: Rivka Kremer
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
           reviewers: rivka-kremer
           branch: autopep8-patches
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray
