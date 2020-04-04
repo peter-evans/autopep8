@@ -49,7 +49,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
           committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action
@@ -99,7 +98,6 @@ jobs:
         if: steps.autopep8.outputs.exit-code == 2
         uses: peter-evans/create-pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
           committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action

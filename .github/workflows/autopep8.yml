@@ -14,7 +14,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: autopep8 action fixes
           committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action
@@ -25,7 +24,6 @@ jobs:
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
           reaction-type: hooray
