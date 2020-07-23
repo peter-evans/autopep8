@@ -47,10 +47,9 @@ jobs:
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         with:
           commit-message: autopep8 action fixes
-          committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
@@ -96,10 +95,9 @@ jobs:
         run: echo ::set-output name=branch-name::"autopep8-patches/$GITHUB_HEAD_REF"
       - name: Create Pull Request
         if: steps.autopep8.outputs.exit-code == 2
-        uses: peter-evans/create-pull-request@v2
+        uses: peter-evans/create-pull-request@v3
         with:
           commit-message: autopep8 action fixes
-          committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: Fixes by autopep8 action
           body: This is an auto-generated PR with fixes by autopep8.
           labels: autopep8, automated pr
