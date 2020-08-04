@@ -30,7 +30,7 @@ See [autopep8 documentation](https://github.com/hhatto/autopep8) for further arg
 
 ## Automated pull requests
 
-On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request) or a [direct push to branch workflow](https://github.com/peter-evans/autopep8#direct-push-with-on-pull_request-workflows).
+On its own this action is not very useful. Please use it in conjunction with [Create Pull Request](https://github.com/peter-evans/create-pull-request) or a [direct push to branch workflow](#direct-push-with-on-pull_request-workflows).
 
 The following workflow is a simple example to demonstrate how the two actions work together.
 
@@ -73,7 +73,8 @@ How it works:
 3. When the pull request containing the fixes is merged the workflow runs again. This time autopep8 makes no changes and the check passes.
 4. The original pull request can now be merged.
 
-Note that due to [limitations on forked repositories](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#permissions-for-the-github_token) this workflow does not work for pull requests raised from forks.
+Note that due to [token restrictions on public repository forks](https://docs.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#permissions-for-the-github_token), this workflow does not work for pull requests raised from forks.
+Private repositories can be configured to [enable workflows](https://docs.github.com/en/github/administering-a-repository/disabling-or-limiting-github-actions-for-a-repository#enabling-workflows-for-private-repository-forks) from forks to run without restriction. 
 
 ```yml
 name: autopep8
@@ -112,17 +113,18 @@ jobs:
 
 The following workflow is an alternative to the previous workflow. Instead of raising a second pull request it commits the changes made by autopep8 directly to the pull request branch.
 
-**Important caveat:** If you have other pull request checks besides the following workflow then you must use a [Personal Access Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) instead of the default `GITHUB_TOKEN`.
+**Important caveat:** If you have other pull request checks besides the following workflow then you must use a [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) instead of the default `GITHUB_TOKEN`.
 This is due to a deliberate limitation imposed by GitHub Actions that events raised by a workflow (such as `push`) cannot trigger further workflow runs.
 This is to prevent accidental "infinite loop" situations, and as an anti-abuse measure.
-Using a `repo` scoped [Personal Access Token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) is an approved workaround. See [this issue](https://github.com/peter-evans/create-pull-request/issues/48) for further detail.
+Using a `repo` scoped [Personal Access Token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) is an approved workaround. See [here](https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs) for further detail.
 
 How it works:
 1. When a pull request is raised the workflow executes as a check.
 2. If autopep8 makes any fixes they will be committed directly to the current pull request branch.
 3. The `push` triggers all pull request checks to run again.
 
-Note that due to [limitations on forked repositories](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/authenticating-with-the-github_token#permissions-for-the-github_token) this workflow does not work for pull requests raised from forks.
+Note that due to [token restrictions on public repository forks](https://docs.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#permissions-for-the-github_token), this workflow does not work for pull requests raised from forks.
+Private repositories can be configured to [enable workflows](https://docs.github.com/en/github/administering-a-repository/disabling-or-limiting-github-actions-for-a-repository#enabling-workflows-for-private-repository-forks) from forks to run without restriction.
 
 ```yml
 name: autopep8
