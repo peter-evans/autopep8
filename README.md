@@ -22,7 +22,7 @@ The action outputs the exit code from autopep8. This can be useful in combinatio
 
 ```yml
       - name: Fail if autopep8 made changes
-        if: steps.autopep8.outputs.exit-code == 2
+        if: ${{ steps.autopep8.outputs.exit-code == 2 }}
         run: exit 1
 ```
 
