@@ -2,4 +2,4 @@
 set -uo pipefail
 
 autopep8 $*
-echo ::set-output name=exit-code::$?
+echo "exit-code=$?" >> $GITHUB_OUTPUT
