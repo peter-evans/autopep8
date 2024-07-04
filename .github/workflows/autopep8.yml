@@ -6,13 +6,13 @@ jobs:
   autopep8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: autopep8
         uses: ./
         with:
           args: --recursive --in-place --aggressive --aggressive .
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v6
         with:
           commit-message: autopep8 action fixes
           title: Fixes by autopep8 action
@@ -21,7 +21,7 @@ jobs:
           reviewers: peter-evans
           branch: autopep8-patches
       - name: Add reaction
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v4
         with:
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
